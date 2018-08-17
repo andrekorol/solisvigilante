@@ -1,7 +1,6 @@
-import urllib.request
-import urllib.error
 import gzip
-from astropy.io import fits
+import urllib.error
+import urllib.request
 
 
 def download_from_url(url):
