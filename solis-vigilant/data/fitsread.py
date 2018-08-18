@@ -23,10 +23,13 @@ class FitsFile(object):
     """Class for reading FITS files"""
     def __init__(self, filename):
         self.filename = filename
+        self.hdul = fits.open(self.filename)
 
     def print_fits_hdul_info(self):
-        with fits.open(self.filename) as hdul:
-            hdul.info()
+        self.hdul.info()
+
+    def close_hdul(self):
+        self.hdul.close()
 
 
 file = download_from_url('http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/2011/08/09/BLEN7M_'
@@ -35,5 +38,6 @@ print(file)
 
 fits_test_file = FitsFile(file)
 fits_test_file.print_fits_hdul_info()
+fits_test_file.close_hdul()
 
 os.remove(file)
