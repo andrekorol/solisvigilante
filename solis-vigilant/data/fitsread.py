@@ -1,3 +1,4 @@
+import aplpy
 import os
 import urllib.error
 import urllib.request
@@ -25,22 +26,31 @@ def download_from_url(url):
 
 
 class FitsFile(object):
-    """Class for reading FITS files from an url"""
-    def __init__(self, url):
-        self.url = url
-        self.filename = download_from_url(self.url)
-        self.hdul = fits.open(self.filename)
+    """Main entry point to the FITS file format"""
+    def __init__(self, filename):
+        self.filename = filename
 
-    def print_fits_hdul_info(self):
-        self.hdul.info()
+    @staticmethod
+    def open(filename):
+        hdul = fits.open(filename)
+        return hdul
 
-    def close_hdul(self):
-        self.hdul.close()
+    @staticmethod
+    def edit(filename):
+        hdul = fits.open(filename, 'update')
+        return hdul
+
+    @staticmethod
+    def close(hdul):
+        hdul.close()
 
 
-fits_test_file = FitsFile('http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/2011/08/09/BLEN7M_'
-                          '20110809_083004_24.fit.gz')
-fits_test_file.print_fits_hdul_info()
-fits_test_file.close_hdul()
+fits_filename = download_from_url('http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/2011/08/09/'
+                                  'BLEN7M_20110809_083004_24.fit.gz')
+fits_file = FitsFile(fits_filename)
+hdul = fits_file.open(fits_file.filename)
+hdul.info()
+hdul.close()
 
-os.remove(fits_test_file.filename)
+gc = aplpy.FITSFigure(fits_filename)
+gc.show_grayscale()
