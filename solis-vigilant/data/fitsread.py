@@ -52,7 +52,9 @@ url_list = ['http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callis
 
 for url_link in url_list:
     fits_filename = download_from_url(url_link)
-    gc = aplpy.FITSFigure(fits_filename)
+    hdu_list = FitsFile().open(fits_filename)
+    gc = aplpy.FITSFigure(hdu_list)
     gc.show_colorscale()
     gc.save(fits_filename.split('.')[0] + '.png')
+    FitsFile().close(hdu_list)
     os.remove(fits_filename)
