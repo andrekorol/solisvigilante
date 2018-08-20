@@ -45,12 +45,14 @@ class FitsFile(object):
         hdul.close()
 
 
-fits_filename = download_from_url('http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/2011/08/09/'
-                                  'BLEN7M_20110809_083004_24.fit.gz')
-fits_file = FitsFile(fits_filename)
-hdul = fits_file.open(fits_file.filename)
-hdul.info()
-hdul.close()
+url_list = ['http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/'
+            '2011/08/09/BLEN7M_20110809_083004_24.fit.gz',
+            'http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/'
+            '2011/08/09/BLEN7M_20110809_083005_25.fit.gz']
 
-gc = aplpy.FITSFigure(fits_filename)
-gc.show_grayscale()
+for url_link in url_list:
+    fits_filename = download_from_url(url_link)
+    gc = aplpy.FITSFigure(fits_filename)
+    gc.show_colorscale()
+    gc.save(fits_filename.split('.')[0] + '.png')
+    os.remove(fits_filename)
