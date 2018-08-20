@@ -10,7 +10,7 @@ config = {
     'download_url': 'https://github.com/andrekorol/solis-vigilant',
     'author_email': 'anrobits@yahoo.com.br',
     'version': '0.1',
-    'install_requires': ['astropy'],
+    'install_requires': ['aplpy', 'astropy'],
     'packages': ['solis-vigilant'],
     'scripts': ['bin/solis-vigilant.py'],
     'name': 'solis-vigilant'
