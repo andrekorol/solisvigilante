@@ -6,16 +6,9 @@
 
 Tools and scripts for analyzing data from the Sun  
 
-Sample plots:
+Sample plot:
 
-![alt text](https://github.com/andrekorol/solis-vigilant/blob/master/solis-vigilant/BLEN7M_20110809_083004_24.png?raw=true
+![alt text](https://raw.githubusercontent.com/andrekorol/solis-vigilant/master/BLEN7M_20110809_083004_24.png
  "BLEN7M_20110809_083004_24.png")
- BLEN7M_20110809_083004_24
+ BLEN7M_20110809_083004_24.fit.gz
  
- ![alt text](https://github.com/andrekorol/solis-vigilant/blob/master/solis-vigilant/BLEN7M_20110809_083005_25.png?raw=true
- "BLEN7M_20110809_083005_25.png")
- BLEN7M_20110809_083005_25
- 
- ![alt text](https://github.com/andrekorol/solis-vigilant/blob/master/solis-vigilant/BLEN7M_20120731_151359_25.png?raw=true
- "BLEN7M_20120731_151359_25.png")
- BLEN7M_20120731_151359_25
