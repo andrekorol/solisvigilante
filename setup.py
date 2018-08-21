@@ -17,3 +17,6 @@ config = {
 }
 
 setup(**config)
+
+string = 'http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto/2011/08/09/BLEN7M_20110809_' \
+         '083004_24.fit.g'
