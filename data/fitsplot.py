@@ -69,7 +69,9 @@ def PlotFitsdB(file_path, save=True):
     filename = os.path.basename(file_path)
     plt.title(filename, fontsize=16)
     plt.tick_params(labelsize=14)
-    plt.show()
 
     if save:
-        plt.savefig(file_path + '.png', bbox_inches='tight')
+        img_filename = '.'.join(file_path.split('.')[:-2]) + '.png'
+        plt.savefig(img_filename, bbox_inches='tight')
+
+    plt.show()
