@@ -9,10 +9,10 @@ from tkinter import filedialog
 
 class FitsFile(object):
     """Main entry point to the FITS file format"""
-    def __init__(self, filename=None):
+    def __init__(self, filename: object = None) -> object:
         self.filename = filename
         self.hdul = None
-        self.file_path = None
+        self.fisle_path = None
 
     def get_file_path(self):
         root = Tk()
@@ -100,3 +100,8 @@ class FitsFile(object):
             plt.savefig(img_filename, bbox_inches='tight')
 
         plt.show()
+
+
+class ECallistoFitsFile(FitsFile):
+    def __init__(self, filename: str = None):
+        FitsFile.__init__(self, filename)
