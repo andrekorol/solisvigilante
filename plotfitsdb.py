@@ -11,6 +11,7 @@ fits_filename = download_from_url(sample_url)
 
 fits_file_path = fitsplot.GetFitsPath()
 
-fitsplot.PlotFitsdB(fits_file_path)
+# fitsplot.PlotFitsdB(fits_file_path)
+fitsplot.FitsLinearRegression(fits_file_path)
 
 os.remove(fits_filename)
