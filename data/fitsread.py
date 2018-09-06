@@ -5,16 +5,24 @@ import os
 from tkinter import Tk
 from tkinter import messagebox
 from tkinter import filedialog
+from scipy import stats
 
 
 class FitsFile(object):
     """Main entry point to the FITS file format"""
-    def __init__(self, filename: object = None) -> object:
+    def __init__(self, filename: object = None):
         self.filename = filename
         self.hdul = None
-        self.fisle_path = None
+        self.file_path = None
 
-    def get_file_path(self):
+    def set_filename(self, filename):
+        self.filename = filename
+
+    def get_filename(self):
+        return self.filename
+
+
+    def set_file_path(self):
         root = Tk()
         root.withdraw()
         if self.filename is not None:
@@ -32,10 +40,12 @@ class FitsFile(object):
 
         else:
             self.file_path = filedialog.askopenfilename()
+            self.set_filename(self.file_path.split('/')[-1])
 
+    def get_gile_path(self):
         return self.file_path
 
-    def get_hdul(self):
+    def set_hdul(self):
         try:
             self.hdul = fits.open(self.file_path)
         except FileNotFoundError as e:
@@ -46,62 +56,93 @@ class FitsFile(object):
             messagebox.showerror('OSError', f'{self.file_path} is not a FITS file.')
             raise e
 
+
+    def get_hdul(self):
         return self.hdul
 
-    def close(self):
+    def close_hdul(self):
         self.hdul.close()
 
     def delete_file(self):
         os.remove(self.file_path)
 
-    @staticmethod
-    def digit_to_voltage(digits):
-        return digits / 255.0 * 2500.0
-
-    def plot_db_above_background(self, save=True):
-        data = self.hdul[0].data.astype(np.float32)
-        hh = float(self.hdul[0].header['TIME-OBS'].split(':')[0])
-        mm = float(self.hdul[0].header['TIME-OBS'].split(':')[1])
-        ss = float(self.hdul[0].header['TIME-OBS'].split(':')[2])
-        time = self.hdul[1].data[0][0].astype(np.float32)
-        f0 = self.hdul[1].data[0][1].astype(np.float32)
-        frequency = f0[:-10]  # cut lower 10 channels
-
-        start_time = hh * 3600 + mm * 60 + ss  # all in seconds
-
-        rows = data.shape[0]
-        columns = data.shape[1]
-        print('Rows =', rows)
-        print('Columns =', columns)
-
-        dt = time[1] - time[0]
-        time_axis = (start_time + dt * np.arange(data.shape[1])) / 3600
-
-        plt.figure(figsize=(11, 6))
-        v_min = -1  # -0.5, 100
-        v_max = 8  # 4, 160
-        dref = data - np.min(data)
-        db = self.digit_to_voltage(dref) / 25.4  # conversion digit->voltage->into db
-        db_median = np.median(db, axis=1, keepdims=True)
-
-        plt.imshow(db - db_median, cmap='magma', norm=plt.Normalize(v_min, v_max),
-                   aspect='auto', extent=[time_axis[0], time_axis[-1000],
-                                          frequency[-1], frequency[0]])
-        plt.gca().invert_yaxis()
-        plt.colorbar(label='dB above background')
-        plt.xlabel('Time (UT)', fontsize=15)
-        plt.ylabel('Frequency (MHz)', fontsize=15)
-        filename = os.path.basename(self.file_path)
-        plt.title(filename, fontsize=16)
-        plt.tick_params(labelsize=14)
-
-        if save:
-            img_filename = '.'.join(self.file_path.split('.')[:-2]) + '.png'
-            plt.savefig(img_filename, bbox_inches='tight')
-
-        plt.show()
-
 
 class ECallistoFitsFile(FitsFile):
     def __init__(self, filename: str = None):
         FitsFile.__init__(self, filename)
+        self.hdul_dataset = {}
+
+    @staticmethod
+    def digit_to_voltage(digits):
+        return digits / 255.0 * 2500.0
+
+    def set_hdul_dataset(self, hdul_dataset):
+        if self.hdul is None:
+            if self.file_path is None:
+                self.set_file_path()
+            self.set_hdul()
+
+        hdul_dataset['data'] = self.hdul[0].data.astype(np.float32)
+        hdul_dataset['hh'] = float(self.hdul[0].header['TIME-OBS'].split(':')[0])
+        hdul_dataset['mm'] = float(self.hdul[0].header['TIME-OBS'].split(':')[1])
+        hdul_dataset['ss'] = float(self.hdul[0].header['TIME-OBS'].split(':')[2])
+        hdul_dataset['time'] = self.hdul[1].data[0][0].astype(np.float32)
+        hdul_dataset['f0'] = self.hdul[1].data[0][1].astype(np.float32)
+        hdul_dataset['frequency'] = hdul_dataset['f0'][:-10]  # cut lower 10 channels
+        hdul_dataset['start_time'] = hdul_dataset['hh'] * 3600 + hdul_dataset['mm'] * 60 + hdul_dataset['ss']
+        hdul_dataset['rows'] = hdul_dataset['data'].shape[0]
+        hdul_dataset['columns'] = hdul_dataset['data'].shape[1]
+        hdul_dataset['dt'] = hdul_dataset['time'][1] - hdul_dataset['time'][0]
+        hdul_dataset['time_axis'] = (hdul_dataset['start_time'] + hdul_dataset['dt'] *
+                                     np.arange(hdul_dataset['columns'])) / 3600
+        hdul_dataset['freq_axis'] = np.linspace(hdul_dataset['frequency'][0],
+                                                hdul_dataset['frequency'][-1],
+                                                3600)
+        self.close_hdul()
+
+    def get_hdul_dataset(self):
+        return self.hdul_dataset
+
+    def plot_db_above_background(self, save=True):
+        plt.figure(figsize=(11, 6))
+        v_min = -1 # -0.5, 100
+        v_max = 8 # 4, 160
+        dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
+        db = self.digit_to_voltage(dref) / 25.4 # conversion digit->voltage->into db
+        db_median = np.median(db, axis=1, keepdims=True)
+        plt.imshow(db - db_median, cmap='magma', norm=plt.Normalize(v_min, v_max),
+                   aspect='auto', extent=[self.hdul_dataset['time_axis'][0],
+                                          self.hdul_dataset['time_axis'][-1000],
+                                          self.hdul_dataset['frequency'][-1],
+                                          self.hdul_dataset['frequency'][0]])
+        plt.gca().invert_yaxis()
+        plt.colorbar(label='dB above background')
+        plt.xlabel('Time (UT)', fontsize=15)
+        plt.ylabel('Frequency (MHz', fontsize=15)
+        plt.title(self.filename, fontsize=16)
+        plt.tick_params(labelsize=14)
+        if save:
+            img_filename = '.'.join(self.file_path.split('.')[:-2]) + '.png'
+            plt.savefig(img_filename, bbox_inches='tight')
+        plt.show()
+
+    def plot_fits_linear_regression(self, save=True):
+        linear_regression = stats.linregress(self.hdul_dataset['time_axis'],
+                                             self.hdul_dataset['freq_axis'])
+        intercept = linear_regression.intercept
+        slope = linear_regression.slope
+        plt.gca().invert_yaxis()
+        plt.plot(self.hdul_dataset['time_axis'][2000:],
+                 intercept + slope * self.hdul_dataset['time_axis'][2000:],
+                 'r')
+        plt.xlabel('Time (UT)', fontsize=15)
+        plt.ylabel('Frequency (MHz)', fontsize=15)
+        plt.title(self.filename + ' Simple Linear Regression\nf(t) = ' +
+                  f'{intercept:.2f} + ({slope:.2f}t)', fontsize=16)
+        plt.tick_params(labelsize=14)
+        if save:
+            img_filename = '.'.join(self.file_path.split('.')[:-2]) +\
+                           'linear_regression.png'
+            plt.savefig(img_filename, bbox_inches='tight')
+        plt.show()
+        # TODO: Improve the plot_fits_linear_regression method
