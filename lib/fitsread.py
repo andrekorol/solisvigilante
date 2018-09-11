@@ -138,7 +138,9 @@ class ECallistoFitsFile(FitsFile):
 
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset
-        hdul_dataset['lin_reg'] = np.polyfit(hdul_dataset['time_axis'], hdul_dataset['freq_axis'], 1)
+        hdul_dataset['lin_reg'] = np.polyfit(hdul_dataset['time_axis'],
+                                             hdul_dataset['freq_axis'],
+                                             1)
 
     def get_fits_linear_regression(self):
         return self.hdul_dataset['lin_reg']
