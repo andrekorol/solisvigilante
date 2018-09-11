@@ -105,3 +105,9 @@ venv.bak/
 
 # PyCharm configuration files
 .idea
+
+# Fits files
+*.gz
+
+# Plots
+*.png
