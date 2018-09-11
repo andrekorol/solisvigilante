@@ -143,18 +143,25 @@ class ECallistoFitsFile(FitsFile):
     def get_fits_linear_regression(self):
         return self.hdul_dataset['lin_reg']
 
+    def set_fits_linear_regression_function(self):
+        hdul_dataset = self.hdul_dataset
+        hdul_dataset['lin_reg_fn'] = np.poly1d(hdul_dataset['lin_reg'])
+
     def get_fits_linear_regression_function(self):
-        return np.poly1d(self.hdul_dataset['lin_reg'])
+        return self.hdul_dataset['lin_reg_fn']
 
     def plot_fits_linear_regression(self, show=False, save=True):
-        intercept = self.hdul_dataset['lin_reg'].intercept
-        slope = self.hdul_dataset['lin_reg'].slope
+        hdul_dataset = self.hdul_dataset
         plt.gca().invert_yaxis()
-        plt.plot(self.hdul_dataset['time'][2000:],
-                 intercept + slope * self.hdul_dataset['time_axis'][2000:],
+        plt.plot(hdul_dataset['time'][2000:],
+                 hdul_dataset['freq_axis'][2000:],
+                 hdul_dataset['time'][2000:],
+                 hdul_dataset['lin_reg_fn'](hdul_dataset['time'][2000:]),
                  'r')
         plt.xlabel('Time (UT)', fontsize=15)
         plt.ylabel('Frequency (MHz)', fontsize=15)
+        slope = hdul_dataset['lin_reg'][0]
+        intercept = hdul_dataset['lin_reg'][1]
         plt.title(self.filename + ' Simple Linear Regression\nf(t) = ' +
                   f'{intercept:.2f} + ({slope:.2f}t)', fontsize=16)
         plt.tick_params(labelsize=14)
@@ -164,7 +171,7 @@ class ECallistoFitsFile(FitsFile):
             plt.savefig(img_filename, bbox_inches='tight')
         if show:
             plt.show()
-        # TODO: Improve the plot_fits_linear_regression method
+        # TODO: Fix the plot_fits_linear_regression method
 
 
 class ChromosphericEvaporationFitsFile(ECallistoFitsFile):
