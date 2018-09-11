@@ -5,7 +5,6 @@ import os
 from tkinter import Tk
 from tkinter import messagebox
 from tkinter import filedialog
-from scipy import stats
 import math
 
 
@@ -139,17 +138,19 @@ class ECallistoFitsFile(FitsFile):
 
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset
-        hdul_dataset['lin_reg'] = stats.linregress(hdul_dataset['time_axis'],
-                                                   hdul_dataset['freq_axis'])
+        hdul_dataset['lin_reg'] = np.polyfit(hdul_dataset['time_axis'], hdul_dataset['freq_axis'], 1)
 
     def get_fits_linear_regression(self):
         return self.hdul_dataset['lin_reg']
+
+    def get_fits_linear_regression_function(self):
+        return np.poly1d(self.hdul_dataset['lin_reg'])
 
     def plot_fits_linear_regression(self, show=False, save=True):
         intercept = self.hdul_dataset['lin_reg'].intercept
         slope = self.hdul_dataset['lin_reg'].slope
         plt.gca().invert_yaxis()
-        plt.plot(self.hdul_dataset['time_axis'][2000:],
+        plt.plot(self.hdul_dataset['time'][2000:],
                  intercept + slope * self.hdul_dataset['time_axis'][2000:],
                  'r')
         plt.xlabel('Time (UT)', fontsize=15)
@@ -171,44 +172,28 @@ class ChromosphericEvaporationFitsFile(ECallistoFitsFile):
         ECallistoFitsFile.__init__(self, filename)
         self.front_velocity = None
 
-    @staticmethod
-    def round_time_value(value):
-        return round(value / 0.25, 0) * 0.25
-
-    def set_front_velocity(self, velocity=None,
-                           inf_front_time=None,
-                           sup_front_time=None):
+    def set_front_velocity(self, inf_front_time,
+                           sup_front_time,
+                           velocity=None):
         if velocity is not None:
             self.front_velocity = velocity
         else:
-            hdul_dataset = self.hdul_dataset
-            if inf_front_time is None:
-                inf_front_time = hdul_dataset['time'][0]
-            else:
-                inf_front_time = self.round_time_value(inf_front_time)
-            if sup_front_time is None:
-                sup_front_time = hdul_dataset['time'][-1]
-            else:
-                sup_front_time = self.round_time_value(sup_front_time)
-
-            intercept = hdul_dataset['lin_reg'].intercept
-            slope = hdul_dataset['lin_reg'].slope
-            inf_front_freq = intercept + slope * inf_front_time
-            sup_front_freq = intercept + slope * sup_front_time
+            lin_reg_fn = self.get_fits_linear_regression_function()
+            inf_front_freq = lin_reg_fn(inf_front_time)
+            sup_front_freq = lin_reg_fn(sup_front_time)
 
             inf_density = (inf_front_freq / 8.98e-03) ** 2
             sup_density = (sup_front_freq / 8.98e-03) ** 2
 
             Nq = 4.6e+8
             H = 7e+4
-            h1 = 3.5e+5
             inf_height = math.log(Nq / inf_density) * H
             sup_height = math.log(Nq / sup_density) * H
 
             time_diff = (sup_front_time - inf_front_time) * 3600
             height_diff = sup_height - inf_height
 
-            self.front_velocity = (height_diff / time_diff)
+            self.front_velocity = round(height_diff / time_diff, 1)
 
     def get_front_velocity(self):
         return self.front_velocity
