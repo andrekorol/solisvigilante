@@ -6,14 +6,14 @@ except ImportError:
 config = {
     'description': 'Tools and scripts for analyzing data from the Sun',
     'author': 'Andre Rossi Korol',
-    'url': 'https://github.com/andrekorol/solis-vigilant',
-    'download_url': 'https://github.com/andrekorol/solis-vigilant',
+    'url': 'https://github.com/andrekorol/solis-vigilante',
+    'download_url': 'https://github.com/andrekorol/solis-vigilante',
     'author_email': 'anrobits@yahoo.com.br',
     'version': '0.1',
     'install_requires': ['aplpy', 'astropy'],
-    'packages': ['solis-vigilant'],
-    'scripts': ['bin/solis-vigilant.py'],
-    'name': 'solis-vigilant'
+    'packages': ['solis-vigilante'],
+    'scripts': ['bin/solis-vigilante.py'],
+    'name': 'solis-vigilante'
 }
 
 setup(**config)
