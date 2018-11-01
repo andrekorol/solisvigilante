@@ -110,4 +110,4 @@ venv.bak/
 *.gz
 
 # Plots
-*.png
+# *.png
