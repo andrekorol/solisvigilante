@@ -127,7 +127,7 @@ class ECallistoFitsFile(FitsFile):
         plt.gca().invert_yaxis()
         plt.colorbar(label='dB above background')
         plt.xlabel('Time (UT)', fontsize=15)
-        plt.ylabel('Frequency (MHz', fontsize=15)
+        plt.ylabel('Frequency (MHz)', fontsize=15)
         plt.title(self.filename, fontsize=16)
         plt.tick_params(labelsize=14)
         if save:
