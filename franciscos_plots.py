@@ -2,16 +2,15 @@ import os
 from lib.urlget import download_from_url
 from lib import fitsread
 
-
 events_per_year = {'2014': ['BLEN7M_20140610_081500_24', 'BLEN7M_20140610_081500_25',
-                   'BLEN7M_20140610_091500_24', 'BLEN7M_20140610_091500_25',
-                   'DARO-HF_20140610_113000_58'],
-          '2016': ['GLASGOW_20160128_114501_59',
-                   'GLASGOW_20160721_110000_59',
-                   'BLENSW_20160723_050000_01', 'BLENSW_20160723_050000_02', 'BLENSW_20160723_051500_01',
-                   'BLENSW_20160723_051500_02', 'BLENSW_20160723_053000_01', 'BLENSW_20160723_053000_02',
-                   'BLENSW_20160723_054500_01', 'BLENSW_20160723_054500_02',
-                   'MRT3_20160807_035250_59']}
+                            'BLEN7M_20140610_091500_24', 'BLEN7M_20140610_091500_25',
+                            'DARO-HF_20140610_113000_58'],
+                   '2016': ['GLASGOW_20160128_114501_59',
+                            'GLASGOW_20160721_110000_59',
+                            'BLENSW_20160723_050000_01', 'BLENSW_20160723_050000_02', 'BLENSW_20160723_051500_01',
+                            'BLENSW_20160723_051500_02', 'BLENSW_20160723_053000_01', 'BLENSW_20160723_053000_02',
+                            'BLENSW_20160723_054500_01', 'BLENSW_20160723_054500_02',
+                            'MRT3_20160807_035250_59']}
 
 plots_dir = 'francisco_plots'
 data_archives = 'http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto'
