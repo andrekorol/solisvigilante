@@ -1,0 +1,94 @@
+CYCLE 24 TOP SOLAR FLARE LIST
+Compiled by SolarHam.com
+
+
+CLASS   DATE           YEAR  SUNSPOT  PEAK TIME 
+-----   ------------   ----  ------   ---------
+
+X9.3 -  September 6    2017  (2673) @ 12:02 UTC
+X8.2 -  September 10   2017  (2673) @ 16:06 UTC
+X6.9 -  August 9       2011  (1263) @ 08:08 UTC
+X5.4 -  March 7        2012  (1429) @ 00:24 UTC
+X4.9 -  February 25    2014  (1990) @ 00:49 UTC
+X3.3 -  November 5     2013  (1890) @ 22:12 UTC
+X3.2 -  May 14         2013  (1748) @ 01:17 UTC
+X3.1 -  October 24     2014  (2192) @ 21:40 UTC
+X2.8 -  May 13         2013  (1748) @ 16:09 UTC
+X2.7 -  May 5          2015  (2339) @ 22:11 UTC
+
+---------------------------------------------
+
+X2.3 -  October 29     2013  (1875) @ 21:54 UTC
+X2.2 -  September 6    2017  (2673) @ 09:10 UTC
+X2.2 -  March 11       2015  (2297) @ 16:22 UTC
+X2.2 -  June 10        2014  (2087) @ 11:42 UTC
+X2.2 -  February 15    2011  (1158) @ 01:56 UTC
+X2.1 -  October 25     2013  (1882) @ 15:03 UTC
+X2.1 -  September 6    2011  (1283) @ 01:50 UTC
+X2.0 -  October 27     2014  (2192) @ 14:47 UTC
+X2.0 -  October 26     2014  (2192) @ 10:56 UTC
+X1.9 -  November 3     2011  (1339) @ 20:27 UTC
+X1.9 -  September 24   2011  (1302) @ 09:40 UTC
+X1.8 -  December 20    2014  (2242) @ 00:27 UTC
+X1.8 -  September 6    2011  (1283)
+X1.8 -  October 23     2012  (1598)
+X1.7 -  October 25     2013  (1882)
+X1.7 -  May 13         2013  (1748)
+X1.7 -  January 27     2012  (1402)
+X1.6 -  November 7     2014  (2205) @ 17:26 UTC
+X1.6 -  October 22     2014  (2192) @ 14:28 UTC
+X1.6 -  September 10   2014  (2158) @ 17:45 UTC
+X1.5 -  June 10        2014  (2087) @ 12:52 UTC
+X1.5 -  March 9        2011  (1166)
+X1.4 -  July 12        2012  (1520)
+X1.4 -  September 22   2011  (1302)
+X1.3 -  April 25       2014  (2035) @ 00:27 UTC
+X1.3 -  September 7    2017  (2673) @ 14:26 UTC
+X1.3 -  March 7        2012  (1429)
+X1.2 -  January 7      2014  (1943) @ 18:32 UTC
+X1.2 -  May 15         2013  (1748)
+X1.1 -  October 19     2014  (2192) @ 05:03 UTC
+X1.1 -  November 10    2013  (1890) @ 05:14 UTC
+X1.1 -  November 8     2013  (1890) @ 04:26 UTC
+X1.1 -  July 6         2012  (1515)
+X1.1 -  March 4        2012  (1429)
+X1.0 -  October 25     2014  (2192) @ 17:08 UTC
+X1.0 -  June 11        2014  (2087) @ 09:06 UTC
+X1.0 -  March 29       2014  (2017) @ 17:48 UTC
+X1.0 -  November 19    2013  (1893) @ 10:26 UTC
+X1.0 -  October 28     2013  (1875) 
+M9.9 -  January 1      2014  (1936) @ 18:52 UTC
+M9.3 -  March 12       2014  (1996) @ 22:34 UTC
+M9.3 -  October 24     2013  (1877)
+M9.3 -  August 4       2011  (1261)
+M9.3 -  July 30        2011  (1260)
+M9.2 -  March 7        2015  (2297) @ 22:22 UTC
+M9.0 -  October 20     2012  (1598)
+M8.7 -  December 17    2014  (2242) @ 04:55 UTC
+M8.7 -  October 22     2014  (2192) @ 01:59 UTC
+M8.7 -  January 23     2012  (1402)
+M8.4 -  March 10       2012  (1429)
+M8.3 -  February 6     2010  (1045)
+M8.2 -  March 3        2015  (2290) @ 01:35 UTC
+M8.1 -  September 8    2017  (2673) @ 07:49 UTC
+M7.9 -  June 25        2015  (2371) @ 08:16 UTC
+M7.9 -  November 5     2014  (2105) @ 09:47 UTC
+M7.9 -  March 13       2012  (1429)
+M7.7 -  July 19        2012  (1520)
+M7.6 -  September 28   2015  (2422) @ 14:58 UTC
+M7.3 -  September 7    2017  (2673) @ 10:15 UTC 
+M7.3 -  October 2      2014  (2173) @ 19:01 UTC 
+M7.3 -  April 18       2014  (2036) @ 13:03 UTC 
+M7.2 -  January 7      2014  (1944) @ 10:13 UTC 
+M7.1 -  October 26     2014  (2192) @ 00:34 UTC
+M6.9 -  December 18    2014  (2241) @ 21:58 UTC
+M6.7 -  April 18       2016  (2529) @ 00:29 UTC
+M6.6 -  February 13    2011  (1158)
+M6.5 -  June 22        2015  (2371) @ 18:23 UTC
+M6.5 -  July 8         2014  (2113) @ 16:20 UTC
+M6.5 -  April 2        2014  (2027) @ 14:05 UTC
+M6.5 -  April 11       2013  (1719)
+M6.4 -  December 31    2013  (1936) @ 21:58 UTC
+M6.3 -  November 1     2013  (1884)
+M6.1 -  December 4     2014  (2222) @ 18:25 UTC
+M6.1 -  July 28        2012  (1532)
