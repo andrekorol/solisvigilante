@@ -29,5 +29,5 @@ def download_from_url(url, save_dir=None):
 
     except urllib.error.URLError as e:
         urllib.request.urlcleanup()
-        print(f'{url}: Name or service not known')
+        print("{}: Name or service not known".format(url))
         raise e
