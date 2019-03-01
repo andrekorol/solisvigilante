@@ -10,9 +10,11 @@ config = {
     'download_url': 'https://github.com/andrekorol/solis-vigilante',
     'author_email': 'anrobits@yahoo.com.br',
     'version': '0.1',
+    'install_requires': ['numpy', 'astropy', 'matplotlib'],
     'packages': ['solis-vigilante'],
-    'scripts': ['bin/solis-vigilante.py'],
+    'scripts': ['bin/cycle24.py', 'bin/franciscos_plots.py', 'bin/genfitsdb.py', 'plotdatafits.py',
+                'bin/plotfitsdb.py'],
     'name': 'solis-vigilante'
 }
 
-setup(**config, install_requires=['numpy', 'astropy', 'matplotlib'])
+setup(**config)
