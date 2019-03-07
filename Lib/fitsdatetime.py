@@ -16,14 +16,16 @@ class DateTimeFitsFile(ECallistoFitsFile):
         self.minute = str(datetime_obj.minute)
 
     @staticmethod
-    def pad_string(string: str, width: int):
-        return string.zfill(width)
+    def pad_string(string: str):
+        if len(string) == 1:
+            string = '0' + string
+        return string
 
     def format_datetime(self):
-        self.month = self.pad_string(self.month, 2)
-        self.day = self.pad_string(self.day, 2)
-        self.hour = self.pad_string(self.hour, 2)
-        self.minute = self.pad_string(self.minute, 2)
+        self.month = self.pad_string(self.month)
+        self.day = self.pad_string(self.day)
+        self.hour = self.pad_string(self.hour)
+        self.minute = self.pad_string(self.minute)
 
     def plot_fits_from_date(self, instrument: str, move_plot: bool = False):
         self.format_datetime()
@@ -36,9 +38,7 @@ class DateTimeFitsFile(ECallistoFitsFile):
                 for item in index:
                     if item.find(instrument + '_' + date_str) != -1:
                         fits_url = '/'.join([date_url, item[item.find(instrument + '_' + date_str):item.find(".gz")+3]])
-                        print("Fits url = ", fits_url)
                         fits_file_path = download_from_url(fits_url)
-                        print("Fits file path = ", fits_file_path)
                         self.set_file_path(fits_file_path)
                         self.set_hdul_dataset()
                         self.plot_db_above_background()
