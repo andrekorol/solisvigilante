@@ -45,7 +45,7 @@ class FitsFile(object):
                 self.file_path = filedialog.askopenfilename()
                 self.set_filename(self.file_path.split('/')[-1])
 
-    def get_gile_path(self):
+    def get_file_path(self):
         return self.file_path
 
     def set_hdul(self):
@@ -113,7 +113,7 @@ class ECallistoFitsFile(FitsFile):
         return self.hdul_dataset
 
     def plot_db_above_background(self, show=False, save=True):
-        plt.figure(figsize=(11, 6))
+        plt.figure(1, figsize=(11, 6))
         v_min = -1  # -0.5, 100
         v_max = 8  # 4, 160
         dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
@@ -138,7 +138,9 @@ class ECallistoFitsFile(FitsFile):
             plt.savefig(img_filename, bbox_inches='tight')
         if show:
             plt.show()
-        plt.close()
+        plt.clf()
+        plt.cla()
+        plt.close('all')
 
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset
