@@ -24,16 +24,14 @@ def plot_fits_from_date(fits_file_obj, fits_filepath,  year, month, day, instrum
 
 
 # Get list of Solar Cycle 24 top flares and save it in the proper directory
-# cycle24_dir = os.path.join("..", "solar-cycles", "cycle24")
-# top_flares = download_from_url("http://www.solarham.net/top10.txt", cycle24_dir)
-second_half_top_flares = "second_half_top_flares.txt"
+cycle24_dir = os.path.join("..", "solar-cycles", "cycle24")
+top_flares = download_from_url("http://www.solarham.net/top10.txt", cycle24_dir)
 data_archives = "http://soleil80.cs.technik.fhnw.ch/solarradio/data/2002-20yy_Callisto"
 
 # Parse top_flares data
 months = {month_name: month_number for month_number, month_name in enumerate(calendar.month_name)}
 if __name__ == '__main__':
-    # with open(setop_flares) as f:
-    with open(second_half_top_flares) as f:
+    with open(top_flares) as f:
         for line in f:
             if line[0:5] not in ["CYCLE", "Compi", "     ", "CLASS", "-----"] and line != '\n':
                 line = ' '.join(line.split())
