@@ -21,26 +21,29 @@ class FitsFile(object):
     def get_filename(self):
         return self.filename
 
-    def set_file_path(self):
-        root = Tk()
-        root.withdraw()
-        if self.filename is not None:
-            try:
-                top = os.getcwd()
-                for root, dirs, files in os.walk(top):
-                    for file in files:
-                        if file == self.filename:
-                            self.file_path = os.path.abspath(file)
-            finally:
-                if self.file_path is None:
-                    messagebox.showerror('FileNotFoundError: [Errno 2]',
-                                         'No such file or directory: '
-                                         f'{self.filename}')
-                    raise FileNotFoundError
-
+    def set_file_path(self, file_path: str = None):
+        if file_path is not None:
+            self.file_path = file_path
         else:
-            self.file_path = filedialog.askopenfilename()
-            self.set_filename(self.file_path.split('/')[-1])
+            root = Tk()
+            root.withdraw()
+            if self.filename is not None:
+                try:
+                    top = os.getcwd()
+                    for root, dirs, files in os.walk(top):
+                        for file in files:
+                            if file == self.filename:
+                                self.file_path = os.path.abspath(file)
+                finally:
+                    if self.file_path is None:
+                        messagebox.showerror('FileNotFoundError: [Errno 2]',
+                                             'No such file or directory: '
+                                             f'{self.filename}')
+                        raise FileNotFoundError
+
+            else:
+                self.file_path = filedialog.askopenfilename()
+                self.set_filename(self.file_path.split('/')[-1])
 
     def get_gile_path(self):
         return self.file_path
@@ -135,6 +138,7 @@ class ECallistoFitsFile(FitsFile):
             plt.savefig(img_filename, bbox_inches='tight')
         if show:
             plt.show()
+        plt.close()
 
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset

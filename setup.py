@@ -6,15 +6,15 @@ except ImportError:
 config = {
     'description': 'Tools and scripts for analyzing data from the Sun',
     'author': 'Andre Rossi Korol',
-    'url': 'https://github.com/andrekorol/solis-vigilante',
-    'download_url': 'https://github.com/andrekorol/solis-vigilante',
+    'url': 'https://github.com/andrekorol/Lib',
+    'download_url': 'https://github.com/andrekorol/Lib',
     'author_email': 'anrobits@yahoo.com.br',
     'version': '0.1',
     'install_requires': ['numpy', 'astropy', 'matplotlib'],
-    'packages': ['solis-vigilante'],
-    'scripts': ['bin/cycle24.py', 'bin/franciscos_plots.py', 'bin/genfitsdb.py', 'plotdatafits.py',
-                'bin/plotfitsdb.py'],
-    'name': 'solis-vigilante'
+    'packages': ['Lib'],
+    'scripts': ['Tools/cycle24.py', 'Tools/franciscos_plots.py', 'Tools/genfitsdb.py', 'plotdatafits.py',
+                'Tools/plotfitsdb.py'],
+    'name': 'Lib'
 }
 
 setup(**config)
