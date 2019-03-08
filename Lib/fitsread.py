@@ -142,6 +142,38 @@ class ECallistoFitsFile(FitsFile):
         plt.cla()
         plt.close('all')
 
+    def plot_freq_range_db_above_background(self, start, end, show=False, save=True):
+        plt.figure(1, figsize=(11, 6))
+        v_min = -1  # -0.5, 100
+        v_max = 8  # 4, 160
+        print(self.hdul_dataset['data'])
+        return
+        dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
+        # conversion digit->voltage->into db
+        db = self.digit_to_voltage(dref) / 25.4
+        db_median = np.median(db, axis=1, keepdims=True)
+        plt.imshow(db - db_median, cmap='magma',
+                   norm=plt.Normalize(v_min, v_max),
+                   aspect='auto', extent=[self.hdul_dataset['time_axis'][0],
+                                          self.hdul_dataset['time_axis']
+                                          [-1000],
+                                          start,
+                                          end])
+        plt.gca().invert_yaxis()
+        plt.colorbar(label='dB above background')
+        plt.xlabel('Time (UT)', fontsize=15)
+        plt.ylabel('Frequency (MHz)', fontsize=15)
+        plt.title(self.filename, fontsize=16)
+        plt.tick_params(labelsize=14)
+        if save:
+            img_filename = '.'.join(self.file_path.split('.')[:-2]) + '.png'
+            plt.savefig(img_filename, bbox_inches='tight')
+        if show:
+            plt.show()
+        plt.clf()
+        plt.cla()
+        plt.close('all')
+
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset
         hdul_dataset['lin_reg'] = np.polyfit(hdul_dataset['time_axis'],
