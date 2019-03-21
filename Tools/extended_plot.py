@@ -13,6 +13,5 @@ for file in file_list:
     fits_file = fitsread.ECallistoFitsFile(fits_filename)
     fits_file.set_file_path()
     fits_file.set_hdul_dataset()
-    # fits_file.plot_db_above_background()
     fits_file.plot_freq_range_db_above_background(100, 350)
     fits_file.delete_file()
