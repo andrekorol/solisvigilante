@@ -146,8 +146,6 @@ class ECallistoFitsFile(FitsFile):
         plt.figure(1, figsize=(11, 6))
         v_min = -1  # -0.5, 100
         v_max = 8  # 4, 160
-        print(self.hdul_dataset['data'])
-        return
         dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
         # conversion digit->voltage->into db
         db = self.digit_to_voltage(dref) / 25.4
@@ -157,8 +155,9 @@ class ECallistoFitsFile(FitsFile):
                    aspect='auto', extent=[self.hdul_dataset['time_axis'][0],
                                           self.hdul_dataset['time_axis']
                                           [-1000],
-                                          start,
-                                          end])
+                                          self.hdul_dataset['frequency'][-1],
+                                          self.hdul_dataset['frequency'][0]])
+        plt.ylim(start, end)
         plt.gca().invert_yaxis()
         plt.colorbar(label='dB above background')
         plt.xlabel('Time (UT)', fontsize=15)
