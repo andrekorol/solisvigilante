@@ -7,7 +7,7 @@ from socket import timeout
 
 def download_from_url(url: str, save_dir: str = ''):
     """
-    Downloads the file found at the given url
+    Downloads the file found at the given url.
 
     :param url: url string of a file to be downloaded.
     :param save_dir: directory to save downloaded file.
