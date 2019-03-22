@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+from datetime import timedelta
 import numpy as np
 from astropy.io import fits
 import os
@@ -207,6 +208,18 @@ class ECallistoFitsFile(FitsFile):
         plt.ylim(start_freq, end_freq)
         plt.gca().invert_yaxis()
 
+        hours_delta = round(ext_time_axis[-1], 2) - round(ext_time_axis[0], 2)
+        minutes_delta = hours_delta * 60
+        ticks_interval = minutes_delta / 8
+        hours_xticks = []
+        hour = timedelta(hours=round(ext_time_axis[0], 2))
+        hours_xticks.append(':'.join(hour.__str__().split(':')[:-1]))
+        while hour != timedelta(hours=round(ext_time_axis[-1], 2)):
+            hour = hour + timedelta(minutes=ticks_interval)
+            hours_xticks.append(':'.join(hour.__str__().split(':')[:-1]))
+
+        plt.gca().set_xticklabels(hours_xticks, fontsize=15)
+
         labels = {
             'en': {'colorbar': 'dB above background',
                    'xlabel': 'Time (UT)',
@@ -222,6 +235,7 @@ class ECallistoFitsFile(FitsFile):
         plt.ylabel(labels['ylabel'], fontsize=15)
         plt.title(title, fontsize=16)
         plt.tick_params(labelsize=14)
+
         plt.savefig(os.path.join(os.getcwd(), plot_filename) + '.png',
                     bbox_inches='tight')
         plt.show()

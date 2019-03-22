@@ -21,5 +21,5 @@ for file in file_list:
 
 
 fitsread.ECallistoFitsFile.plot_fits_files_list(file_path_list, 100, 450,
-                                                'Insert Title Here', 'pt',
-                                                'plot_extendido')
+                                                '', 'en',
+                                                'extended_plot')
