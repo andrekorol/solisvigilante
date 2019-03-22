@@ -89,6 +89,14 @@ class ECallistoFitsFile(FitsFile):
         hdul = self.hdul
 
         hdul_dataset['data'] = hdul[0].data.astype(np.float32)
+        hdul_dataset['v_min'] = -1  # -0.5, 100
+        hdul_dataset['v_max'] = 8  # 4, 160
+        hdul_dataset['dref'] = hdul_dataset['data'] - \
+                               np.min(hdul_dataset['data'])
+        # conversion digit->voltage->into db
+        hdul_dataset['db'] = self.digit_to_voltage(hdul_dataset['dref']) / 25.4
+        hdul_dataset['db_median'] = np.median(hdul_dataset['db'], axis=1,
+                                              keepdims=True)
         hdul_dataset['hh'] = float(hdul[0].header['TIME-OBS'].split(':')[0])
         hdul_dataset['mm'] = float(hdul[0].header['TIME-OBS'].split(':')[1])
         hdul_dataset['ss'] = float(hdul[0].header['TIME-OBS'].split(':')[2])
@@ -114,14 +122,10 @@ class ECallistoFitsFile(FitsFile):
 
     def plot_db_above_background(self, show=False, save=True):
         plt.figure(1, figsize=(11, 6))
-        v_min = -1  # -0.5, 100
-        v_max = 8  # 4, 160
-        dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
-        # conversion digit->voltage->into db
-        db = self.digit_to_voltage(dref) / 25.4
-        db_median = np.median(db, axis=1, keepdims=True)
-        plt.imshow(db - db_median, cmap='magma',
-                   norm=plt.Normalize(v_min, v_max),
+        plt.imshow(self.hdul_dataset['db'] - self.hdul_dataset['db_median'],
+                   cmap='magma', norm=plt.Normalize(self.hdul_dataset['v_min'],
+                                                    self.hdul_dataset['v_max']
+                                                    ),
                    aspect='auto', extent=[self.hdul_dataset['time_axis'][0],
                                           self.hdul_dataset['time_axis']
                                           [-1000],
@@ -142,22 +146,19 @@ class ECallistoFitsFile(FitsFile):
         plt.cla()
         plt.close('all')
 
-    def plot_freq_range_db_above_background(self, start, end, show=False, save=True):
+    def plot_freq_range_db_above_background(self, start_freq, end_freq, show=False,
+                                            save=True):
         plt.figure(1, figsize=(11, 6))
-        v_min = -1  # -0.5, 100
-        v_max = 8  # 4, 160
-        dref = self.hdul_dataset['data'] - np.min(self.hdul_dataset['data'])
-        # conversion digit->voltage->into db
-        db = self.digit_to_voltage(dref) / 25.4
-        db_median = np.median(db, axis=1, keepdims=True)
-        plt.imshow(db - db_median, cmap='magma',
-                   norm=plt.Normalize(v_min, v_max),
+        plt.imshow(self.hdul_dataset['db'] - self.hdul_dataset['db_median'],
+                   cmap='magma', norm=plt.Normalize(self.hdul_dataset['v_min'],
+                                                    self.hdul_dataset['v_max']
+                                                    ),
                    aspect='auto', extent=[self.hdul_dataset['time_axis'][0],
                                           self.hdul_dataset['time_axis']
                                           [-1000],
                                           self.hdul_dataset['frequency'][-1],
                                           self.hdul_dataset['frequency'][0]])
-        plt.ylim(start, end)
+        plt.ylim(start_freq, end_freq)
         plt.gca().invert_yaxis()
         plt.colorbar(label='dB above background')
         plt.xlabel('Time (UT)', fontsize=15)
@@ -172,6 +173,58 @@ class ECallistoFitsFile(FitsFile):
         plt.clf()
         plt.cla()
         plt.close('all')
+
+    @staticmethod
+    def plot_fits_files_list(files_list: list, start_freq: int, end_freq: int,
+                             title: str, lang: str, plot_filename: str):
+        extended_db = None
+        ext_time_axis = None
+        plt.figure(1, figsize=(11, 6))
+        fitsfile = None
+        for file in files_list:
+            fits_filename = file.split(os.sep)[-1]
+            fitsfile = ECallistoFitsFile(fits_filename)
+            fitsfile.set_file_path()
+            fitsfile.set_hdul_dataset()
+            if extended_db is None and ext_time_axis is None:
+                extended_db = fitsfile.hdul_dataset['db']
+                ext_time_axis = fitsfile.hdul_dataset['time_axis']
+            else:
+                extended_db = np.hstack((extended_db,
+                                         fitsfile.hdul_dataset['db']))
+                ext_time_axis = np.hstack((ext_time_axis,
+                                           fitsfile.hdul_dataset['time_axis']))
+            fitsfile.delete_file()
+        extended_db_median = np.median(extended_db, axis=1, keepdims=True)
+        plt.imshow(extended_db - extended_db_median, cmap='magma',
+                   norm=plt.Normalize(fitsfile.hdul_dataset['v_min'],
+                                      fitsfile.hdul_dataset['v_max']),
+                   aspect='auto',
+                   extent=[ext_time_axis[0],
+                           ext_time_axis[-1],
+                           fitsfile.hdul_dataset['frequency'][-1],
+                           fitsfile.hdul_dataset['frequency'][0]])
+        plt.ylim(start_freq, end_freq)
+        plt.gca().invert_yaxis()
+
+        labels = {
+            'en': {'colorbar': 'dB above background',
+                   'xlabel': 'Time (UT)',
+                   'ylabel': 'Frequency (MHz)'},
+
+            'pt': {'colorbar': 'dB acima da frequência de fundo',
+                   'xlabel': 'Tempo (UT)',
+                   'ylabel': 'Frequência (MHz)'}
+        }[lang]
+
+        plt.colorbar(label=labels['colorbar'])
+        plt.xlabel(labels['xlabel'], fontsize=15)
+        plt.ylabel(labels['ylabel'], fontsize=15)
+        plt.title(title, fontsize=16)
+        plt.tick_params(labelsize=14)
+        plt.savefig(os.path.join(os.getcwd(), plot_filename) + '.png',
+                    bbox_inches='tight')
+        plt.show()
 
     def set_fits_linear_regression(self):
         hdul_dataset = self.hdul_dataset
