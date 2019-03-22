@@ -12,9 +12,7 @@ def download_from_url(url: str, save_dir: str = ''):
     :param url: url string of a file to be downloaded.
     :param save_dir: directory to save downloaded file.
     If omitted, the file is saved in the current working directory.
-    :returns: absolute path of file downloaded from the given url
-    :raises urllib.error.URLError: raises an exception when an invalid
-    url is given as argument.
+    :returns: absolute path of file downloaded from the given url.
     """
     assert isinstance(url, str), "{} is not a string".format(url)
     assert isinstance(save_dir, str), "{} is not a string".format(save_dir)
