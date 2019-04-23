@@ -11,10 +11,10 @@ config = {
     'author_email': 'anrobits@yahoo.com.br',
     'version': '0.1',
     'install_requires': ['numpy', 'astropy', 'matplotlib'],
-    'packages': ['Lib'],
-    'scripts': ['Tools/cycle24.py', 'Tools/franciscos_plots.py', 'Tools/genfitsdb.py', 'plotdatafits.py',
+    'packages': ['solisvigilante'],
+    'scripts': ['Tools/cycle24.py', 'Tools/franciscos_plots.py', 'Tools/genfitsdb.py', 'Tools/plotdatafits.py',
                 'Tools/plotfitsdb.py'],
-    'name': 'Lib'
+    'name': 'solisvigilante'
 }
 
 setup(**config)
